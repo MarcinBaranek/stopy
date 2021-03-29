@@ -2,7 +2,7 @@
 ---
 # Description:
 Ultimately, the library aims to implement basic stochastic algorithms and pseudo-random number generators derived from non-standard, but often occurring, distributions that are not found in basic libraries. The library is based on the numpy library
----
+
 ---
 # File list:
 1.   processes.py
@@ -17,19 +17,10 @@ Ultimately, the library aims to implement basic stochastic algorithms and pseudo
 
 ---
 # Abstract Files
-## Abstract processes.py
-
----
-
-## Abstract dif_equ.py
-
----
-
-# Abstract montecarlo.py
-
----
-
-# Abstract generate.py
+## processes.py
+## dif_equ.py
+## montecarlo.py
+## Abstract generate.py
 
 ---
 
