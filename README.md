@@ -11,5 +11,5 @@ Ultimately, the library aims to implement basic stochastic algorithms and pseudo
 
 ---
 
-Instalation:
+# Instalation:
 "to be done"
