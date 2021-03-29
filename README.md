@@ -16,12 +16,12 @@ Ultimately, the library aims to implement basic stochastic algorithms and pseudo
 "to be done"
 
 ---
-
-# Abstract processes.py
+# Abstract Files
+## Abstract processes.py
 
 ---
 
-# Abstract dif_equ.py
+## Abstract dif_equ.py
 
 ---
 
