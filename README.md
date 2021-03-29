@@ -14,3 +14,23 @@ Ultimately, the library aims to implement basic stochastic algorithms and pseudo
 
 # Instalation:
 "to be done"
+
+---
+
+# Abstract processes.py
+
+---
+
+# Abstract dif_equ.py
+
+---
+
+# Abstract montecarlo.py
+
+---
+
+# Abstract generate.py
+
+---
+
+# Usage examples
