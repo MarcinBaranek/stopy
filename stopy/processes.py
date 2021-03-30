@@ -24,7 +24,7 @@ class Wiener:
         while (point ** 2).sum() < 1:
             point = trace.__next__()
             do_something(point)
-    =============================================
+    ============================================
     """
     @staticmethod
     def generate(start_point=np.zeros(shape=(1,)), time=1, division=500):
@@ -86,6 +86,7 @@ class Poisson:
         for arr in Poisson.generate_on_grid(grid, start_point=np.zeros(shape=(5,))):
             plt.step(arr, np.arange(len(arr)))
         plt.show()
+    ============================================
     """
     @staticmethod
     def generate_incrementally(lam, start_point=np.zeros(shape=(1,)), time=1, division=500):
