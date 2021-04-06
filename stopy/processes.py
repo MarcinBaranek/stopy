@@ -46,7 +46,7 @@ class Wiener:
                                                              size=start_point.shape)
                 yield start_point
         else:
-            for _ in range(int(time * division)):
+            for _ in range(int(time * division) - 1):
                 start_point = start_point + np.random.normal(loc=0.0, scale=1 / np.sqrt(division),
                                                              size=start_point.shape)
                 yield start_point
@@ -108,7 +108,7 @@ class Poisson:
         :return: generator generating successive realizations of the process
         """
         yield start_point if start_point is not None else np.zeros(shape=(1,))
-        for _ in range(int(time * division)):
+        for _ in range(int(time * division) - 1):
             start_point = start_point + np.random.poisson(lam / division, size=start_point.shape)
             yield start_point
 
@@ -236,7 +236,7 @@ class OrnsteinUhlenbeck:
                 _wiener, _point, _time = OrnsteinUhlenbeck._eval_step(theta, mu, sigma, _point, _time, _wiener, step)
                 yield _point
         else:
-            for _ in range(int(time * division)):
+            for _ in range(int(time * division) - 1):
                 _wiener, _point, _time = OrnsteinUhlenbeck._eval_step(theta, mu, sigma, _point, _time, _wiener, step)
                 yield _point
 
