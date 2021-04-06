@@ -107,7 +107,8 @@ class Poisson:
         :param division: number of intermediate points in a unit time segment
         :return: generator generating successive realizations of the process
         """
-        yield start_point if start_point is not None else np.zeros(shape=(1,))
+        start_point = start_point if start_point is not None else np.zeros(shape=(1,))
+        yield start_point
         for _ in range(int(time * division) - 1):
             start_point = start_point + np.random.poisson(lam / division, size=start_point.shape)
             yield start_point

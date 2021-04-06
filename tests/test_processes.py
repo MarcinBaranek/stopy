@@ -23,8 +23,8 @@ class TestWiener(TestCase):
 
 class TestPoisson(TestCase):
     def test__generate_incrementally(self):
-        arguments=lam, start_point = None, time = 1, division = 500
-        shape_div_100 = Poisson._generate_array(lam, start_point = None, time = 1, division = 500)
+        arguments = {"lam": 1, "start_point": np.zeros(shape=(3,)), "time": 1, "division": 100}
+        shape_div_100 = np.array([element for element in Poisson._generate_incrementally(**arguments)])
         shape_div_200 = Wiener.generate_array(np.zeros(shape=(4,)), time=1.0, division=200, x_axis=False)
         shape_time_20 = Wiener.generate_array(np.zeros(shape=(5,)), time=20.0, x_axis=False)
         shape_time_8coma5 = Wiener.generate_array(np.zeros(shape=(6,)), time=8.5, x_axis=False)
