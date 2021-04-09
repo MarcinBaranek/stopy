@@ -6,7 +6,7 @@ Ultimately, the library aims to implement basic stochastic algorithms and pseudo
 ---
 # File list:
 1.   processes.py
-2.   "to be done" dif_equ.py
+2.   dif_equ.py
 3.   "to be done" montecarlo.py
 4.   "to be done" generate.py
 
