@@ -31,7 +31,7 @@ class Wiener:
         pass
 
     @staticmethod
-    def generate(start_point=None, time=1, division=500):
+    def generate(start_point=None, time=1.0, division=500):
         """Function generating the process
         :param start_point: numpy.array with shape (n,),
             initial point of the process
@@ -41,15 +41,15 @@ class Wiener:
         :return: generator generating successive realizations of the process
         """
         _point = np.zeros(shape=(1,)) if start_point is None else start_point
-        size = _point.shape
+        dim = _point.shape
         if time < 0:
             while True:
                 yield _point
-                _point = _point + np.random.normal(size) / np.sqrt(division)
+                _point = _point + np.random.normal(size=dim) / np.sqrt(division)
         else:
             for _ in range(int(time * division)):
                 yield _point
-                _point = _point + np.random.normal(size) / np.sqrt(division)
+                _point = _point + np.random.normal(size=dim) / np.sqrt(division)
 
     @staticmethod
     def generate_on_grid(_grid, start_point=None):
@@ -67,7 +67,7 @@ class Wiener:
         return np.array(_arr)
 
     @staticmethod
-    def generate_array(start_point=None, time=1, x_axis=False, division=500):
+    def generate_array(start_point=None, time=1.0, x_axis=False, division=500):
         """Function generating the process and return array of
         :param start_point: numpy.array with shape (n,),
             starting point of the process
@@ -79,7 +79,7 @@ class Wiener:
         """
         _point = np.zeros(shape=(1,)) if start_point is None else start_point
         _arr = np.array(
-            [element for element in Wiener.generate(_point,
+            [element for element in Wiener.generate(start_point=_point,
                                                     time=time,
                                                     division=division)])
         return (np.linspace(0.0, time, int(time * division) + 1), _arr)\
