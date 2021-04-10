@@ -15,7 +15,7 @@ setup(
     license="",
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
-        "License :: Freeware",
+        "License :: MIT",
         "Natural Language :: English",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3",
