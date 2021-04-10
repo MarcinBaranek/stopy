@@ -1,7 +1,18 @@
 import numpy as np
+from scipy.stats import chisquare
 
 
-class EulerScheme:
+class _BaseItoProcess:
+    def __init__(self, a_func=None, b_func=None, init_val=None):
+        self.a_func = a_func if a_func is not None else lambda t, x: 0
+        self.b_func = b_func if b_func is not None else lambda t, x: 1
+        self.init_val = 0.0 if init_val is None else init_val
+
+    def __eq__(self, other):
+        return self.a_func == other.a_func and self.b_func == other.b_func
+
+
+class EulerScheme(_BaseItoProcess):
     def __init__(self, a_func=None, b_func=None, init_val=None):
         """Constructor for stochastic EulerScheme.
          It is used to solve character equations:
@@ -11,11 +22,9 @@ class EulerScheme:
         :param b_func: a function of two arguments, time and a spatial variable
         :param init_val: initial condition of the equation
         """
-        self.a_func = a_func if a_func is not None else lambda t, x: 0
-        self.b_func = b_func if b_func is not None else lambda t, x: 1
-        self.init_val = 0.0 if init_val is None else init_val
+        super().__init__(a_func, b_func, init_val)
 
-    def _step(self, init, t_0=0.0, time=1.0, steps=10):
+    def step(self, init, t_0=0.0, time=1.0, steps=10):
         """Internal function that computes the step of Euler's schema.
         :param init: numpy.array or float, initial condition
         :param t_0: float, beginning of time segment
@@ -47,6 +56,62 @@ class EulerScheme:
         _point, _time = self.init_val, t_0
         while True:
             yield _point
-            _point = self._step(init=_point, t_0=_time,
-                                time=_time + dt, steps=steps)
+            _point = self.step(init=_point, t_0=_time,
+                               time=_time + dt, steps=steps)
             _time = _time + dt
+
+
+class ItoProcess(_BaseItoProcess):
+    def __init__(self, a_func=None, b_func=None, init_val=None):
+        """Constructor for Ito process.
+         The process is form:
+         dX_t = a(t, X_t)dt + b(t, X_t)dW_t,
+         with an initial condition X_0 = init_val
+        =========================================================
+        :param a_func: a function of two arguments, time and a spatial variable
+        :param b_func: a function of two arguments, time and a spatial variable
+        :param init_val: initial condition of the process
+        """
+        super().__init__(a_func, b_func, init_val)
+
+    def fit_test(self, data, t_arr=None, df=None, steps=10):
+        """The method checks how well the process describes the data.
+        =========================================================
+        Statistical test:
+        H_0: the data comes from the distribution described by the process
+        H_1: The data is not from the distribution described by the process
+
+        if p value < significance level then we reject the null hypothesis
+
+        References:
+        [1] Bak, J. (1998), Nonparametric methods in finance, Master’s thesis,
+         Department of Mathematical Modelling, Technical University of Denmark,
+         Lyngby. IMM-EKS-1998-34.
+        =========================================================
+        :param data: data array
+        :param t_arr: time array, default is [0, 1, 2, ..., len_data]
+        :param df: int, degrees of freedom, otherwise the number of simulations
+            default is equal to int((len_data - 6) / 5)
+        :param steps: int, the number of steps on which the Euler scheme is
+            based in each simulation
+        :return: float, p value
+        """
+        # data preparation
+        schema, len_data = EulerScheme(self.a_func, self.b_func), len(data)
+        df = int((len_data - 6) / 5) if df is None else df
+        expected = (len_data - 1) / (df + 1)
+        t_arr = np.arange(1, len_data + 1) if t_arr is None else t_arr
+        r_arr = np.ones(shape=(len_data - 1))
+
+        # computing simulation
+        for i in range(len_data - 1):
+            for _ in range(df):
+                r_arr[i] += int(
+                    schema.step(data[i], t_arr[i], t_arr[i + 1], steps)
+                    <= data[i + 1])
+
+        # preparation for the test
+        omega_arr = np.array([
+            np.array(list(map(lambda x: 1 if x == i else 0, r_arr))).sum()
+            for i in range(1, df + 1)])
+        return chisquare(omega_arr, expected)[1]
