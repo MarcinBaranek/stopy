@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.stats import chisquare
+from stopy.montecarlo import MonteCarlo as Mc
 
 
 class ItoProcess:
@@ -60,7 +61,7 @@ class ItoProcess:
         :param t_arr: time array, default is [0, 1, 2, ..., len_data]
         :param df: int, degrees of freedom, otherwise the number of simulations
             default is equal to int((len_data - 6) / 5)
-        :param steps: int, the number of steps on which the Euler scheme is
+        :param steps: int, the number of repeat on which the Euler scheme is
             based in each simulation, default is 10
         :return: float, p value
         """
@@ -75,13 +76,12 @@ class ItoProcess:
         for i in range(len_data - 1):
             for _ in range(df):
                 r_arr[i] += int(
-                    schema.step(data[i], t_arr[i], t_arr[i + 1], steps)
+                    schema.step(data[i], t_arr[i], t_arr[i + 1] - t_arr[i])
                     <= data[i + 1])
 
         # preparation for the test
-        omega_arr = np.array([
-            np.array(list(map(lambda x: 1 if x == i else 0, r_arr))).sum()
-            for i in range(1, df + 1)])
+        omega_arr = [sum(map(lambda x: 1 if x == i else 0, r_arr))
+                     for i in range(1, df + 1)]
         return chisquare(omega_arr, expected)[1]
 
 
@@ -100,38 +100,32 @@ class EulerScheme(ItoProcess):
         """
         super().__init__(a_func, b_func, init_val)
 
-    def step(self, init, t_0=0.0, time=1.0, steps=10):
+    def step(self, point=0.0, time=1.0, dt=1.e-4):
         """Internal function that computes the step of Euler's schema.
-        :param init: numpy.array or float, initial condition
-        :param t_0: float, beginning of time segment
-        :param time: float, ending of time segment
-        :param steps: int, number of time segment division
+        :param point: numpy.array or float, initial condition
+        :param time: float, beginning of time segment
+        :param dt: float, time "gain"
         :return: numpy.array or float
         """
-        interval, _point = time - t_0, init
-        size = np.array(_point).shape if isinstance(_point, np.ndarray) else 1
-        for i in range(steps):
-            arg_time = t_0 + (i * interval) / steps
-            _point = _point\
-                + self.a_func(arg_time, _point) * (interval / steps) \
-                + self.b_func(arg_time, _point) * np.sqrt(interval / steps)\
-                * np.random.normal(size=size)
-        return _point
+        # ToDo fix this below
+        try:
+            size = point.shape[0]
+        except Exception:
+            size = 1
+        return point + self.a_func(time, point) * dt \
+            + self.b_func(time, point) * np.sqrt(dt) \
+            * np.random.normal(size=size)
 
-    def generate(self, t_0=0.0, dt=1.e-4, steps=1):
+    def generate(self, t_0=0.0, dt=1.e-4):
         """Method returning the generator of successive points from the
          trajectories of the X_t process.
         :param t_0: float, beginning of time
         :param dt: time "gain"
-        :param steps: the number of steps in the schema that will be taken in
-            each time increment but not returned. This means that the scheme is
-            computed with time increments of dt / steps
         :return: generator generating successive elements from
             the trajectories of the process
         """
-        _point, _time = self.init_val, t_0
+        point, time = self.init_val, t_0
         while True:
-            yield _point
-            _point = self.step(init=_point, t_0=_time,
-                               time=_time + dt, steps=steps)
-            _time = _time + dt
+            yield point
+            point = self.step(point, time, dt)
+            time += dt
