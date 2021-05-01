@@ -166,6 +166,7 @@ class Poisson:
 
 
 class OrnsteinUhlenbeck:
+    # ToDo write this readable
     """Ornstein-Uhlenbeck process generator
     The Ornstein–Uhlenbeck process X_t is defined by the following
     stochastic differential equation:
@@ -229,8 +230,9 @@ class OrnsteinUhlenbeck:
     def _eval_step(theta, mu, sigma, start_point, time, _wiener, step):
         _wiener = _wiener + np.random.normal(size=start_point.shape)\
                   * np.sqrt(np.exp(2 * theta * time) * (np.exp(step) - 1)),
-        start_point = OrnsteinUhlenbeck._eval(theta=theta, mu=mu, sigma=sigma,
-                                              start_point=start_point, time=time, wiener=_wiener)
+        start_point = OrnsteinUhlenbeck._eval(
+            theta=theta, mu=mu, sigma=sigma,
+            start_point=start_point, time=time, wiener=_wiener)
         time = time + step
         return _wiener, start_point, time
 
