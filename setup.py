@@ -1,5 +1,5 @@
 import os
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 def read(f_name):
@@ -24,7 +24,7 @@ setup(
     ],
     keywords="stochastic wiener poisson",
     url="https://github.com/MarcinBaranek/stopy",
-    packages=["stopy"],
+    packages=find_packages(exclude=['stopy']),
     long_description=read('README'),
     install_requiers=["numpy"],
     include_package_data=True,
