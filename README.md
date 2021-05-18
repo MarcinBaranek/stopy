@@ -5,6 +5,11 @@
 Ultimately, the library aims to implement basic stochastic algorithms and pseudo-random number generators derived from non-standard, but often occurring, distributions that are not found in basic libraries. The library is based on the numpy library
 
 ---
+# Instalation
+        pip install numpy
+        python -m pip install -e git+https://github.com/MarcinBaranek/stopy.git#egg=stopy
+        
+---
 # File list:
 1.   processes.py
 2.   dif_equ.py
