@@ -25,7 +25,7 @@ setup(
     keywords="stochastic wiener poisson",
     url="https://github.com/MarcinBaranek/stopy",
     packages=find_packages(exclude=['stopy']),
-    long_description=read('README'),
+    long_description=read('README.md'),
     install_requiers=["numpy"],
     include_package_data=True,
     zip_safe=False
