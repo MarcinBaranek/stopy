@@ -67,6 +67,7 @@ class IntegrateMonteCarlo(MonteCarlo):
             self.avg, self.var = self.mean_with_variance(self.func(self.gen))
             self.n_samples = n_sim
         else:
+            print(type(self.func(self.gen)))
             self.avg = self.mean(self.func(self.gen))
             self.n_samples = n_sim
 
