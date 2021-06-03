@@ -52,7 +52,7 @@ class IntegrateMonteCarlo(MonteCarlo):
         """
         super().__init__(func)
         self.gen = gen if gen is not None else np.random.rand
-        self.mean = None
+        self.avg = None
         self.var = None
         self.n_samples = None   # n_sim of data
 
@@ -64,10 +64,11 @@ class IntegrateMonteCarlo(MonteCarlo):
         :return: None
         """
         if var:
-            self.mean, self.var = self.mean_with_variance(self.func(self.gen))
+            self.avg, self.var = self.mean_with_variance(self.func(self.gen))
             self.n_samples = n_sim
         else:
-            self.mean = self.mean(self.func(self.gen))
+            self.avg = self.mean(self.func(self.gen))
+            self.n_samples = n_sim
 
     def confidence_interval(self, alpha=0.05):
         """
@@ -77,6 +78,6 @@ class IntegrateMonteCarlo(MonteCarlo):
         """
         if self.var is None:
             self.simulate()
-        margin = st.norm.interval(1.0 - alpha)\
+        margin = st.norm.interval(1.0 - alpha)[1]\
             * np.sqrt(self.var / self.n_samples)
-        return self.mean - margin, self.mean + margin
+        return self.avg - margin, self.avg + margin
