@@ -82,7 +82,7 @@ class Wiener:
             [element for element in Wiener.generate(start_point=_point,
                                                     time=time,
                                                     division=division)])
-        return (np.linspace(0.0, time, int(time * division) + 1), _arr)\
+        return (np.linspace(0.0, time, int(time * division)), _arr)\
             if x_axis else _arr
 
 
