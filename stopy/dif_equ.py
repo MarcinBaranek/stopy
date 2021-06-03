@@ -1,6 +1,5 @@
 import numpy as np
 from scipy.stats import chisquare
-from stopy.montecarlo import MonteCarlo as Mc
 
 
 class EulerScheme:
