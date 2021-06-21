@@ -15,9 +15,12 @@ Ultimately, the library aims to implement basic stochastic algorithms and pseudo
 
 # Instalation:
 Pycharm:
+
         pip install numpy
         python -m pip install -e git+https://github.com/MarcinBaranek/stopy.git#egg=stopy
+        
 Google colab:
+
         !pip install -e git+https://github.com/MarcinBaranek/stopy.git#egg=stopy
         import sys
         sys.path.append("/content/src/stopy")
