@@ -1,5 +1,10 @@
 # This workflow will install Python dependencies, run tests and lint with a variety of Python versions
 ---
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 jobs:
   build:
     fail-fast: false
