@@ -9,9 +9,14 @@ on:
   pull_request:
     branches: [ main ]
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   build:
 
+    name: Build & test on ${{ matrix.os }} with ${{ matrix.python-version }}.
     runs-on: ${{ matrix.os }}
       strategy:
         matrix:
