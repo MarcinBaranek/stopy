@@ -43,12 +43,3 @@ jobs:
       -
         name: "Test with pytest"
         run: "pytest\n"
-    strategy: ~
-name: "Python package"
-true:
-  pull_request:
-    branches:
-      - main
-  push:
-    branches:
-      - main
