@@ -9,7 +9,7 @@ class TestMonteCarlo(TestCase):
         mc = MonteCarlo()
         self.assertEqual(mc.mean(lambda: 1.0), 1.0)
         data = np.linspace(1, 11, 19)
-        self.assertEquals((mc.mean(lambda: data) - data).all(), 0.0)
+        self.assertEqual((mc.mean(lambda: data) - data).all(), 0.0)
         self.assertAlmostEqual(mc.mean(lambda: np.random.normal(loc=3.5),
                                        n_sim=10_000), 3.5, places=1)
         self.assertAlmostEqual(mc.mean(np.random.normal, param={"loc": -0.2},
@@ -19,7 +19,7 @@ class TestMonteCarlo(TestCase):
         mc = MonteCarlo()
         self.assertEqual(mc.mean_with_variance(lambda: 1.0)[1], 0.0)
         data = np.linspace(1, 11, 19)
-        self.assertEquals((mc.mean_with_variance(lambda: data)[1]).all(), 0.0)
+        self.assertEqual((mc.mean_with_variance(lambda: data)[1]).all(), 0.0)
         self.assertAlmostEqual(mc.mean_with_variance(
             lambda: np.random.normal(loc=3.5), n_sim=10_000)[1], 1.0, places=1)
         self.assertAlmostEqual(mc.mean_with_variance(

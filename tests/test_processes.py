@@ -1,6 +1,6 @@
 from unittest import TestCase
 import numpy as np
-from stopy.processes import Wiener, Poisson, OrnsteinUhlenbeck
+from stopy.processes import Wiener, Poisson
 
 
 class TestWiener(TestCase):
